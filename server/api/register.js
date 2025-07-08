@@ -1,5 +1,6 @@
 import express from 'express';
 import { connection } from '../setupDb.js';
+import { hash } from '../lib/hash.js';
 
 export const register = express.Router();
 
@@ -24,7 +25,7 @@ register.post('/', async (req, res) => {
         }
 
         const insertQuery = `INSERT INTO users (fullname, email, password_hash) VALUES (?, ?, ?)`;
-        const insertRes = await connection.execute(insertQuery, [fullname, email, password]);
+        const insertRes = await connection.execute(insertQuery, [fullname, email, hash(password)]);
         const insertResObject = insertRes[0];
 
         if (insertResObject.insertId > 0) {
