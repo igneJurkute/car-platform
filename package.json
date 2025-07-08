@@ -1,0 +1,15 @@
+{
+  "name": "car-platform",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Igne",
+  "license": "MIT",
+  "dependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}
