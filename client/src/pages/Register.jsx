@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 export function Register() {
+    const navigate = useNavigate();
     const [fullname, setFullname] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -29,7 +31,11 @@ export function Register() {
                 body: JSON.stringify({ fullname, email, password }),
             })
                 .then(res => res.json())
-                .then(data => console.log(data))
+                .then(data => {
+                    if (data.status === 'ok') {
+                        navigate('/login');
+                    }
+                })
                 .catch(err => console.error(err));
         }
     }
