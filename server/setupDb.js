@@ -2,6 +2,8 @@ import mysql from 'mysql2/promise';
 import { DB_DATABASE, DB_HOST, DB_PASS, DB_USER } from './env.js';
 import { hash } from './lib/hash.js';
 
+const DATABASE_RESET = false;
+
 async function setupDb() {
     // Susikuriame DB, jei nera
     let connection = await mysql.createConnection({
@@ -10,7 +12,9 @@ async function setupDb() {
         password: DB_PASS,
     });
 
-    await connection.execute(`DROP DATABASE IF EXISTS \`${DB_DATABASE}\``);
+    if (DATABASE_RESET) {
+        await connection.execute(`DROP DATABASE IF EXISTS \`${DB_DATABASE}\``);
+    }
     await connection.execute(`CREATE DATABASE IF NOT EXISTS \`${DB_DATABASE}\``);
     connection.query(`USE \`${DB_DATABASE}\``);
 
@@ -20,9 +24,10 @@ async function setupDb() {
     await tokensTable(connection);
 
     // Uzpildome informacija
-    await generateRoles(connection);
-    await generateUsers(connection);
-
+    if (DATABASE_RESET) {
+        await generateRoles(connection);
+        await generateUsers(connection);
+    }
     return connection;
 }
 
