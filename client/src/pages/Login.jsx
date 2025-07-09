@@ -1,17 +1,19 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import { GlobalContext } from '../context/GlobalContext';
 
 export function Login() {
+    const { updateEmail, updateFullname, updateLoginStatus, updateRole } = useContext(GlobalContext);
     const navigate = useNavigate();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    function updateEmail(e) {
+    function emailUpdateHandler(e) {
         setEmail(e.target.value);
     }
 
-    function updatePassword(e) {
+    function passwordUpdateHandler(e) {
         setPassword(e.target.value);
     }
 
@@ -30,6 +32,10 @@ export function Login() {
                 .then(res => res.json())
                 .then(data => {
                     if (data.status === 'ok') {
+                        updateLoginStatus(true);
+                        updateEmail(data.user.email);
+                        updateFullname(data.user.fullname);
+                        updateRole(data.user.role);
                         navigate('/dashboard');
                     }
                 })
@@ -44,11 +50,11 @@ export function Login() {
                     <h1 className="h3 mb-3 fw-normal">Please login</h1>
 
                     <div className="form-floating mb-3">
-                        <input onChange={updateEmail} value={email} type="email" className="form-control" id="email" />
+                        <input onChange={emailUpdateHandler} value={email} type="email" className="form-control" id="email" />
                         <label htmlFor="email">Email</label>
                     </div>
                     <div className="form-floating mb-3">
-                        <input onChange={updatePassword} value={password} type="password" className="form-control" id="password" placeholder="Password" />
+                        <input onChange={passwordUpdateHandler} value={password} type="password" className="form-control" id="password" placeholder="Password" />
                         <label htmlFor="password">Password</label>
                     </div>
 

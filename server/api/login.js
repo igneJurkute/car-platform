@@ -9,7 +9,9 @@ login.post('/', async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        const selectQuery = `SELECT * FROM users WHERE email = ? AND password_hash = ?;`;
+        const selectQuery = `SELECT users.id, users.fullname, users.email, roles.role FROM users
+                            INNER JOIN roles ON roles.id = users.role_id
+                            WHERE email = ? AND password_hash = ?;`;
         const selectRes = await connection.execute(selectQuery, [email, hash(password)]);
         const users = selectRes[0];
 
@@ -36,9 +38,14 @@ login.post('/', async (req, res) => {
                 'SameSite=Lax',
                 'HttpOnly',
             ];
+
+            const userObj = users[0];
+            delete userObj.id;
+
             return res.status(200).set('Set-Cookie', cookie.join('; ')).json({
                 status: 'ok',
                 msg: 'Token created',
+                user: userObj,
             });
         } else {
             return res.status(400).json({
@@ -52,6 +59,51 @@ login.post('/', async (req, res) => {
             msg: 'POST: LOGIN API - server error.',
         });
     }
+});
+
+login.get('/', async (req, res) => {
+    const { autoToken } = req.cookies;
+
+    if (!autoToken) {
+        return res.status(200).json({
+            status: 'err',
+            msg: 'You are nor logged in.',
+        });
+    }
+
+    try {
+        const selectQuery = `SELECT users.fullname, users.email, roles.role FROM tokens
+                            INNER JOIN users ON tokens.user_id = users.id
+                            INNER JOIN roles ON users.role_id = roles.id
+                            WHERE token = ?;`;
+        const selectRes = await connection.execute(selectQuery, [autoToken]);
+        const users = selectRes[0];
+
+        if (users.length === 0) {
+            const cookie = [
+                'autoToken=' + autoToken,
+                'path=/',
+                'domain=localhost',
+                'max-age=-1',
+                // 'Secure',
+                'SameSite=Lax',
+                'HttpOnly',
+            ];
+            return res.status(200).set('Set-Cookie', cookie.join('; ')).json({
+                status: 'ok',
+                msg: 'Session deleted',
+            });
+        }
+
+        return res.status(200).json({
+            status: 'ok',
+            user: users[0],
+        });
+    } catch (error) {
+
+    }
+
+
 });
 
 login.use((req, res, next) => {

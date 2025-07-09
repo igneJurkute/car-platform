@@ -6,6 +6,9 @@ import { Register } from './pages/Register';
 import { Login } from './pages/Login';
 import { NoPage } from './pages/NoPage';
 import { List } from './pages/List';
+import { UserLayout } from './layout/UserLayout';
+import { Dashboard } from './pages/dashboard/Dashboard';
+import { AdminCarTypes } from './pages/AdminCarTypes';
 
 function App() {
   return (
@@ -18,9 +21,10 @@ function App() {
             <Route path='/login' element={<Login />}></Route>
             <Route path='/list' element={<List />}></Route>
           </Route>
-          {/* <Route Component={UserLayout}>
-            <Route path='/dashboard' element={}></Route>
-          </Route> */}
+          <Route Component={UserLayout}>
+            <Route path='/dashboard' element={<Dashboard />}></Route>
+            <Route path='/car-types' element={<AdminCarTypes />}></Route>
+          </Route>
           <Route Component={PublicLayout}>
             <Route path='*' element={<NoPage />}></Route>
           </Route>
