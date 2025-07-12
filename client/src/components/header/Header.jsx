@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../context/GlobalContext";
 
 export function Header() {
-    const { role, loginStatus, updateEmail, updateFullname, updateLoginStatus, updateRole } = useContext(GlobalContext);
+    const { role, updateEmail, updateFullname, updateLoginStatus, updateRole } = useContext(GlobalContext);
     const navigate = useNavigate();
 
     function logMeOut() {
@@ -57,7 +57,7 @@ export function Header() {
                 </Link>
 
                 <ul className="nav nav-pills">
-                    <li className="nav-item"><Link to="/" className="nav-link active" aria-current="page">Home</Link></li>
+                    <li className="nav-item"><Link to="/" className="nav-link" aria-current="page">Home</Link></li>
                     <li className="nav-item"><Link to="/list" className="nav-link">List</Link></li>
                     {extraLinks}
                 </ul>

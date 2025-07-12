@@ -9,6 +9,11 @@ export const initialContext = {
     updateFullname: () => { },
     email: '',
     updateEmail: () => { },
+    carTypes: [],
+    addCarType: () => { },
+    deleteCarType: () => { },
+    changeCarType: () => { },
+    updateCarTypes: () => { },
 };
 
 export const GlobalContext = createContext(initialContext);
@@ -18,6 +23,9 @@ export const ContextWrapper = (props) => {
     const [role, setRole] = useState(initialContext.role);
     const [fullname, setFullname] = useState(initialContext.fullname);
     const [email, setEmail] = useState(initialContext.email);
+    const [carTypes, setCarTypes] = useState(initialContext.carTypes);
+
+    // User busena: role, email, ....
 
     useEffect(() => {
         fetch('http://localhost:3001/api/login', {
@@ -35,6 +43,25 @@ export const ContextWrapper = (props) => {
                     setRole(data.user.role);
                     setFullname(data.user.fullname);
                     setEmail(data.user.email);
+                }
+            })
+            .catch(console.error);
+    }, []);
+
+    // Pradinis automobiliu tipu masyvas
+    useEffect(() => {
+        fetch('http://localhost:3001/api/car-types', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+            },
+            credentials: 'include',
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                if (data.status === 'ok' && data.list) {
+                    setCarTypes(data.list.map(t => t.title));
                 }
             })
             .catch(console.error);
@@ -59,6 +86,22 @@ export const ContextWrapper = (props) => {
         setEmail(email);
     }
 
+     function updateCarTypes(carTypes) {
+        setCarTypes(carTypes);
+    }
+
+    function addCarType(carType) {
+        setCarTypes(pre => [...pre, carType]);
+    }
+
+    function deleteCarType(carType) {
+        setCarTypes(pre => pre.filter(title => title !== carType));
+    }
+
+    function changeCarType(oldCarType, newCarType) {
+        setCarTypes(pre => pre.map(title => title === oldCarType ? newCarType : title));
+    }
+
     const value = {
         loginStatus,
         updateLoginStatus,
@@ -68,6 +111,11 @@ export const ContextWrapper = (props) => {
         updateFullname,
         email,
         updateEmail,
+        carTypes,
+        addCarType,
+        deleteCarType,
+        changeCarType,
+        updateCarTypes,
     };
 
     return (
