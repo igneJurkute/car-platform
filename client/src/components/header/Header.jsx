@@ -31,12 +31,15 @@ export function Header() {
 
     const adminLinks = <>
         <li className="nav-item"><Link to="/dashboard" className="nav-link">Dashboard</Link></li>
+        <li className="nav-item"><Link to="/users" className="nav-link">Users</Link></li>
+        <li className="nav-item"><Link to="/cars" className="nav-link">Cars</Link></li>
         <li className="nav-item"><Link to="/car-types" className="nav-link">Car types</Link></li>
         <li className="nav-item"><button onClick={logMeOut} className="nav-link" type="button">Logout</button></li>
     </>;
 
     const sellerLinks = <>
         <li className="nav-item"><Link to="/dashboard" className="nav-link">Dashboard</Link></li>
+        <li className="nav-item"><Link to="/cars" className="nav-link">Cars</Link></li>
         <li className="nav-item"><button onClick={logMeOut} className="nav-link" type="button">Logout</button></li>
     </>;
 

@@ -42,6 +42,7 @@ async function usersTable(db) {
                         email varchar(40) NOT NULL,
                         password_hash varchar(128) NOT NULL,
                         role_id int(10) NOT NULL DEFAULT 2,
+                        is_blocked int(1) NOT NULL DEFAULT 0,
                         created timestamp NOT NULL DEFAULT current_timestamp(),
                         PRIMARY KEY (id),
                         KEY role_id (role_id),

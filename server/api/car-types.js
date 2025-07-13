@@ -101,6 +101,7 @@ carTypes.delete('/:title', async (req, res) => {
 carTypes.put('/:oldTitle', async (req, res) => {
     const { oldTitle } = req.params;
     const { newTitle } = req.body;
+    console.log(oldTitle, newTitle);
 
     if (!oldTitle || !newTitle) {
         return res.status(400).json({

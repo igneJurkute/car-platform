@@ -14,6 +14,8 @@ export const initialContext = {
     deleteCarType: () => { },
     changeCarType: () => { },
     updateCarTypes: () => { },
+    cars: [],
+    updateCars: () => { },
 };
 
 export const GlobalContext = createContext(initialContext);
@@ -24,6 +26,7 @@ export const ContextWrapper = (props) => {
     const [fullname, setFullname] = useState(initialContext.fullname);
     const [email, setEmail] = useState(initialContext.email);
     const [carTypes, setCarTypes] = useState(initialContext.carTypes);
+    const [cars, setCars] = useState(initialContext.cars);
 
     // User busena: role, email, ....
 
@@ -59,7 +62,6 @@ export const ContextWrapper = (props) => {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
                 if (data.status === 'ok' && data.list) {
                     setCarTypes(data.list.map(t => t.title));
                 }
@@ -102,6 +104,10 @@ export const ContextWrapper = (props) => {
         setCarTypes(pre => pre.map(title => title === oldCarType ? newCarType : title));
     }
 
+     function updateCars(cars) {
+        setCars(cars);
+    }
+
     const value = {
         loginStatus,
         updateLoginStatus,
@@ -116,6 +122,8 @@ export const ContextWrapper = (props) => {
         deleteCarType,
         changeCarType,
         updateCarTypes,
+        cars,
+        updateCars,
     };
 
     return (
