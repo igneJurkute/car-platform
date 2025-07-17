@@ -13,6 +13,8 @@ import { Cars } from './pages/cars/Cars';
 import { AdminCarTypes } from './pages/car-types/AdminCarTypes';
 import { AdminNewCarType } from './pages/car-types/AdminNewCarType';
 import { AdminEditCarType } from './pages/car-types/AdminEditCarType';
+import { AddCar } from './pages/cars/AddCar';
+import { EditCar } from './pages/cars/EditCar';
 
 function App() {
   return (
@@ -32,6 +34,8 @@ function App() {
             <Route path='/car-types/:carType/edit' element={<AdminEditCarType />}></Route>
             <Route path='/users' element={<Users />}></Route>
             <Route path='/cars' element={<Cars />}></Route>
+            <Route path='/cars/new' element={<AddCar />}></Route>
+            <Route path='/cars/:carId/edit' element={<EditCar />}></Route>
           </Route>
           <Route Component={PublicLayout}>
             <Route path='*' element={<NoPage />}></Route>

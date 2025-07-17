@@ -11,7 +11,7 @@ export function UserLayout() {
     return (
         <>
             <Header />
-            <main>{content}</main>
+            <main className="pb-5">{content}</main>
         </>
     )
 }

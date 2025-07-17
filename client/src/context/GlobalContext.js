@@ -16,6 +16,7 @@ export const initialContext = {
     updateCarTypes: () => { },
     cars: [],
     updateCars: () => { },
+    steeringWheelSides: [],
 };
 
 export const GlobalContext = createContext(initialContext);
@@ -27,9 +28,9 @@ export const ContextWrapper = (props) => {
     const [email, setEmail] = useState(initialContext.email);
     const [carTypes, setCarTypes] = useState(initialContext.carTypes);
     const [cars, setCars] = useState(initialContext.cars);
+    const [steeringWheelSides, setSteeringWheelSides] = useState(initialContext.steeringWheelSides);
 
     // User busena: role, email, ....
-
     useEffect(() => {
         fetch('http://localhost:3001/api/login', {
             method: 'GET',
@@ -69,6 +70,24 @@ export const ContextWrapper = (props) => {
             .catch(console.error);
     }, []);
 
+    // Pradinis vairo poziciju masyvas
+    useEffect(() => {
+        fetch('http://localhost:3001/api/data/steering-wheel-sides', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+            },
+            credentials: 'include',
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'ok' && data.list) {
+                    setSteeringWheelSides(data.list.map(t => t.side));
+                }
+            })
+            .catch(console.error);
+    }, []);
+
     function updateLoginStatus(status) {
         setLoginStatus(status);
     }
@@ -88,7 +107,7 @@ export const ContextWrapper = (props) => {
         setEmail(email);
     }
 
-     function updateCarTypes(carTypes) {
+    function updateCarTypes(carTypes) {
         setCarTypes(carTypes);
     }
 
@@ -104,7 +123,7 @@ export const ContextWrapper = (props) => {
         setCarTypes(pre => pre.map(title => title === oldCarType ? newCarType : title));
     }
 
-     function updateCars(cars) {
+    function updateCars(cars) {
         setCars(cars);
     }
 
@@ -124,6 +143,7 @@ export const ContextWrapper = (props) => {
         updateCarTypes,
         cars,
         updateCars,
+        steeringWheelSides,
     };
 
     return (
